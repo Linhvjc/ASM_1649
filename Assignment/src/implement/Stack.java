@@ -36,6 +36,51 @@ public class Stack<E> implements AbstractStack<E> {
         return element;
     }
 
+    public void popAll() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+
+    public boolean contains(E element) {
+        Node<E> current = top;
+        while (current != null) {
+            if (element.equals(current.element)) {
+                return true;
+            }
+            current = current.previous;
+        }
+        return false;
+    }
+
+    public boolean remove(E element) {
+        ensureNonEmpty();
+        Node<E> current = top;
+        Node<E> currentPassed;
+        // check top
+        if (element.equals(current.element)) {
+            top = current.previous;
+            current.previous = null;
+            this.size--;
+            return true;
+        } else {
+            currentPassed = current;
+            current = current.previous;
+        }
+        // check other
+        while (current != null) {
+            if (element.equals(current.element)) {
+                currentPassed.previous = current.previous;
+                current.previous = null;
+                this.size--;
+                return true;
+            }
+            currentPassed = current;
+            current = current.previous;
+        }
+        return false;
+    }
+
     private void ensureNonEmpty() {
         if (size == 0) throw new IllegalStateException("Stack is Empty!!! Can not pop!");
     }

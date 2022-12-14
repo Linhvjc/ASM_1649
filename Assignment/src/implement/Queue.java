@@ -44,6 +44,95 @@ public class Queue<E> implements AbstractQueue<E> {
         this.size--;
         return element;
     }
+
+    @Override
+    public void pollAll() {
+        while (!isEmpty()) {
+            poll();
+        }
+    }
+
+    public boolean contains(E element) {
+        Node<E> current = head;
+        while (current != null) {
+            if (element.equals(current.element)) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    public boolean remove(E element) {
+        ensureNonEmpty();
+        Node<E> current = head;
+        Node<E> currentPassed;
+        // check head
+        if (current.element.equals(element)) {
+            head = current.next;
+            current.next = null;
+            this.size--;
+            return true;
+        } else {
+            currentPassed = current;
+            current = current.next;
+        }
+        // check remain
+        while(current!=null){
+            if (current.element.equals(element)) {
+                currentPassed.next = current.next;
+                current.next = null;
+                this.size--;
+                return true;
+            }
+            currentPassed = current;
+            current = current.next;
+        }
+        return false;
+    }
+
+    public boolean remove(int index) {
+        ensureNonEmpty();
+        Node<E> current = head;
+        Node<E> currentPassed;
+        if (index ==0) {
+            head = current.next;
+            current.next = null;
+            this.size--;
+            return true;
+        } else {
+            currentPassed = current;
+            current = current.next;
+        }
+        int i = 1;
+        while(current!=null){
+            if (index == i) {
+                currentPassed.next = current.next;
+                current.next = null;
+                this.size--;
+                return true;
+            }
+            i++;
+            currentPassed = current;
+            current = current.next;
+        }
+        return false;
+    }
+
+    public int getIndex(E element) {
+        ensureNonEmpty();
+        Node<E> current = head;
+        int i = 0;
+        while(current!=null){
+            if (current.element.equals(element)) {
+                return i;
+            }
+            i++;
+            current = current.next;
+        }
+        return -1;
+    }
+
     private void ensureNonEmpty() {
         if (size == 0) throw new IllegalStateException("Stack is Empty!!! Can not poll!");
     }

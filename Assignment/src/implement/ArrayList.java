@@ -68,6 +68,7 @@ public class ArrayList<E> implements List<E> {
         return element;
     }
 
+
     private void shift(int index) {
         for (int i = index; i < this.size - 1; i++) {
             this.elements[i] = this.elements[i+1];
