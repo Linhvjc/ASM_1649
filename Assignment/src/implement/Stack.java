@@ -36,12 +36,14 @@ public class Stack<E> implements AbstractStack<E> {
         return element;
     }
 
+    @Override
     public void popAll() {
         while (!isEmpty()) {
             pop();
         }
     }
 
+    @Override
     public boolean contains(E element) {
         Node<E> current = top;
         while (current != null) {
@@ -53,6 +55,7 @@ public class Stack<E> implements AbstractStack<E> {
         return false;
     }
 
+    @Override
     public boolean remove(E element) {
         ensureNonEmpty();
         Node<E> current = top;

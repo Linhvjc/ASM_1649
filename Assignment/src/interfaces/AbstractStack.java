@@ -6,4 +6,8 @@ public interface AbstractStack<E> extends Iterable<E> {
     E peek();
     int size();
     boolean isEmpty();
+    void popAll();
+    boolean contains(E element);
+    boolean remove(E element);
+
 }

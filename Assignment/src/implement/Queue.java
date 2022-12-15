@@ -52,6 +52,7 @@ public class Queue<E> implements AbstractQueue<E> {
         }
     }
 
+    @Override
     public boolean contains(E element) {
         Node<E> current = head;
         while (current != null) {
@@ -63,6 +64,7 @@ public class Queue<E> implements AbstractQueue<E> {
         return false;
     }
 
+    @Override
     public boolean remove(E element) {
         ensureNonEmpty();
         Node<E> current = head;
@@ -90,7 +92,7 @@ public class Queue<E> implements AbstractQueue<E> {
         }
         return false;
     }
-
+    @Override
     public boolean remove(int index) {
         ensureNonEmpty();
         Node<E> current = head;
@@ -118,7 +120,7 @@ public class Queue<E> implements AbstractQueue<E> {
         }
         return false;
     }
-
+    @Override
     public int getIndex(E element) {
         ensureNonEmpty();
         Node<E> current = head;
@@ -131,6 +133,36 @@ public class Queue<E> implements AbstractQueue<E> {
             current = current.next;
         }
         return -1;
+    }
+    @Override
+    public E getItemByIndex(int index) {
+        ensureNonEmpty();
+        Node<E> current = head;
+        int i = 0;
+        while(current!=null){
+            if (i == index) {
+                return current.element;
+            }
+            i++;
+            current = current.next;
+        }
+        return null;
+    }
+    @Override
+    // Just for String
+    public ArrayList<Integer> getMultipleIndex(E element) {
+        ensureNonEmpty();
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        Node<E> current = head;
+        int i = 0;
+        while(current!=null){
+            if (((String)current.element).contains((String)element)) {
+                result.add(i);
+            }
+            i++;
+            current = current.next;
+        }
+        return result;
     }
 
     private void ensureNonEmpty() {
