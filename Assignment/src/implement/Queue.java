@@ -91,6 +91,7 @@ public class Queue<E> implements AbstractQueue<E> {
             current = current.next;
         }
         return false;
+        // from a -> b -> c. we remove a -> b and b -> c. Instead, a -> c
     }
     @Override
     public boolean remove(int index) {
@@ -119,6 +120,7 @@ public class Queue<E> implements AbstractQueue<E> {
             current = current.next;
         }
         return false;
+        // from a -> b -> c. we remove a -> b and b -> c. Instead, a -> c
     }
     @Override
     public int getIndex(E element) {

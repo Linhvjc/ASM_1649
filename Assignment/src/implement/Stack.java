@@ -82,6 +82,7 @@ public class Stack<E> implements AbstractStack<E> {
             current = current.previous;
         }
         return false;
+        // from a -> b -> c. we remove a -> b and b -> c. Instead, a -> c
     }
 
     private void ensureNonEmpty() {
