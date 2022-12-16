@@ -71,8 +71,9 @@ public class Queue<E> implements AbstractQueue<E> {
         Node<E> currentPassed;
         // check head
         if (current.element.equals(element)) {
-            head = current.next;
+            Node<E> next = current.next;
             current.next = null;
+            head = next;
             this.size--;
             return true;
         } else {
@@ -82,8 +83,9 @@ public class Queue<E> implements AbstractQueue<E> {
         // check remain
         while(current!=null){
             if (current.element.equals(element)) {
-                currentPassed.next = current.next;
+                Node<E> next = current.next;
                 current.next = null;
+                currentPassed.next = next;
                 this.size--;
                 return true;
             }

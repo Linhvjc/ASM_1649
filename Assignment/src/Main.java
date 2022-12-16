@@ -24,23 +24,20 @@ public class Main {
         while (isRunning) {
             try {
                 // Get input array
-                String[] sentences = input();
+                String[] sentences = inputMessage();
 
                 // Begin process
                 long startTime = System.currentTimeMillis();
                 transportMessage(sentences, queue, historyDisplay, historyStorage, spam);
-                long stopTime = System.currentTimeMillis();
-                System.out.println("Your process takes " + (stopTime - startTime) + "ms\n");
-                // End process
 
                 // Store and print
-                storageMessage(sentences, stack, queue);
+                processMessage(sentences, stack, queue);
+                long stopTime = System.currentTimeMillis();
+                System.out.println("Your process takes " + (stopTime - startTime) + "ms\n");
                 showMessage(stack, tempSpam);
 
                 // handle
                 isRunning = handle(historyDisplay, historyStorage, tempSpam, spam);
-            } catch (IndexOutOfBoundsException ie) {
-                System.out.println("Error: The message has exceeded 250 characters");
             } catch (IOException io) {
                 System.out.println("Error: You haven't typed anything yet");
             } catch (Exception e) {
@@ -239,7 +236,7 @@ public class Main {
         System.out.println();
     }
 
-    private static void storageMessage(String[] sentences, Stack<String> stack, Queue<String> queue) {
+    private static void processMessage(String[] sentences, Stack<String> stack, Queue<String> queue) {
         // Poll all item in queue to add to stack
         while (!queue.isEmpty()) {
             stack.push(queue.poll());
@@ -250,32 +247,41 @@ public class Main {
                                          Queue<String> historyStorage, Stack<String> spam) throws Exception {
         // Format time to add story
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        // Loop for each sentence
         for (int i =0; i< sentences.length; i++) {
-            if (sentences[i].length()> 250) {
-                throw new IndexOutOfBoundsException();
-            } else if(sentences[i].equals("")) {
-                throw new IOException();
-            }
-            else if (spam.contains(sentences[i])) {
-                System.out.println("Your message is considered spam");
-            } else {
-                // Add to queue
-                queue.offer(sentences[i]);
-                System.out.println("Your message has been sent successfully");
-                // Add to history
-                Date date = new Date();
-                historyDisplay.offer(dateFormat.format(date) + ": " + sentences[i]);
-                historyStorage.offer(sentences[i]);
+            try {
+                if (sentences[i].length()> 250) {
+                    throw new IndexOutOfBoundsException();
+                } else if(sentences[i].equals("")) {
+                    throw new IOException();
+                }
+                else if (spam.contains(sentences[i])) {
+                    System.out.println("Your message is considered spam");
+                } else {
+                    // Add to queue
+                    queue.offer(sentences[i]);
+                    System.out.println("Your message has been sent successfully");
+                    // Add to history
+                    Date date = new Date();
+                    historyDisplay.offer(dateFormat.format(date) + ": " + sentences[i]);
+                    historyStorage.offer(sentences[i]);
+                }
+            }  catch (IndexOutOfBoundsException ie) {
+                System.out.println("Error: The message has exceeded 250 characters");
+            } catch (IOException io) {
+                System.out.println("Error: You haven't typed anything yet");
+            } catch (Exception e) {
+                System.out.println("Error: An error occurred, please try again.");
             }
         }
-
     }
 
-    private static String[] input() {
+    private static String[] inputMessage() throws IOException {
         System.out.print("Message: ");
         String message = sc.nextLine();
-        String[] sentences =  message.split("\\.");
+        if (message.equals("")) {
+            throw new IOException();
+        }
+        String[] sentences =  message.split(";");
         for (int i = 0; i<sentences.length; i++) {
             // Remove space
             sentences[i] = sentences[i].trim();
