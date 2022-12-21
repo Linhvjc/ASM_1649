@@ -64,66 +64,66 @@ public class Queue<E> implements AbstractQueue<E> {
         return false;
     }
 
-    @Override
-    public boolean remove(E element) {
-        ensureNonEmpty();
-        Node<E> current = head;
-        Node<E> currentPassed;
-        // check head
-        if (current.element.equals(element)) {
-            Node<E> next = current.next;
-            current.next = null;
-            head = next;
-            this.size--;
-            return true;
-        } else {
-            currentPassed = current;
-            current = current.next;
-        }
-        // check remain
-        while(current!=null){
-            if (current.element.equals(element)) {
-                Node<E> next = current.next;
-                current.next = null;
-                currentPassed.next = next;
-                this.size--;
-                return true;
-            }
-            currentPassed = current;
-            current = current.next;
-        }
-        return false;
-        // from a -> b -> c. we remove a -> b and b -> c. Instead, a -> c
-    }
-    @Override
-    public boolean remove(int index) {
-        ensureNonEmpty();
-        Node<E> current = head;
-        Node<E> currentPassed;
-        if (index ==0) {
-            head = current.next;
-            current.next = null;
-            this.size--;
-            return true;
-        } else {
-            currentPassed = current;
-            current = current.next;
-        }
-        int i = 1;
-        while(current!=null){
-            if (index == i) {
-                currentPassed.next = current.next;
-                current.next = null;
-                this.size--;
-                return true;
-            }
-            i++;
-            currentPassed = current;
-            current = current.next;
-        }
-        return false;
-        // from a -> b -> c. we remove a -> b and b -> c. Instead, a -> c
-    }
+//    @Override
+//    public boolean remove(E element) {
+//        ensureNonEmpty();
+//        Node<E> current = head;
+//        Node<E> currentPassed;
+//        // check head
+//        if (current.element.equals(element)) {
+//            Node<E> next = current.next;
+//            current.next = null;
+//            head = next;
+//            this.size--;
+//            return true;
+//        } else {
+//            currentPassed = current;
+//            current = current.next;
+//        }
+//        // check remain
+//        while(current!=null){
+//            if (current.element.equals(element)) {
+//                Node<E> next = current.next;
+//                current.next = null;
+//                currentPassed.next = next;
+//                this.size--;
+//                return true;
+//            }
+//            currentPassed = current;
+//            current = current.next;
+//        }
+//        return false;
+//        // from a -> b -> c. we remove a -> b and b -> c. Instead, a -> c
+//    }
+//    @Override
+//    public boolean remove(int index) {
+//        ensureNonEmpty();
+//        Node<E> current = head;
+//        Node<E> currentPassed;
+//        if (index ==0) {
+//            head = current.next;
+//            current.next = null;
+//            this.size--;
+//            return true;
+//        } else {
+//            currentPassed = current;
+//            current = current.next;
+//        }
+//        int i = 1;
+//        while(current!=null){
+//            if (index == i) {
+//                currentPassed.next = current.next;
+//                current.next = null;
+//                this.size--;
+//                return true;
+//            }
+//            i++;
+//            currentPassed = current;
+//            current = current.next;
+//        }
+//        return false;
+//        // from a -> b -> c. we remove a -> b and b -> c. Instead, a -> c
+//    }
     @Override
     public int getIndex(E element) {
         ensureNonEmpty();

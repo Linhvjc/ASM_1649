@@ -43,6 +43,15 @@ public class ArrayList<E> implements List<E> {
         this.size++;
     }
 
+    public int getIndex(E element) {
+        for (int i = 0; i< size ; i++) {
+            if(elements[i].equals(element)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @Override
     public E get(int index) {
         checkIndex(index);
@@ -66,6 +75,16 @@ public class ArrayList<E> implements List<E> {
         this.size--;
         ensureCapacity();
         return element;
+    }
+
+    public ArrayList<Integer> getMultipleIndex(E element) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        for (int i = 0; i< size ; i++) {
+            if(((String)elements[i]).contains((String)element)) {
+                result.add(i);
+            }
+        }
+        return result;
     }
 
 

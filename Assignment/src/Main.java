@@ -14,10 +14,10 @@ public class Main {
         // Declare
         Queue<String> queue = new Queue<String>();
         Stack<String> stack = new Stack<String>();
-        Queue<String> tempSpam = new Queue<String>();
-        Stack<String> spam = new Stack<String>();
-        Queue<String> historyDisplay = new Queue<String>();
-        Queue<String> historyStorage = new Queue<String>();
+        ArrayList<String> tempSpam = new ArrayList<String>();
+        ArrayList<String> spam = new ArrayList<String>();
+        ArrayList<String> historyDisplay = new ArrayList<String>();
+        ArrayList<String> historyStorage = new ArrayList<String>();
         boolean isRunning = true;
 
         // Program
@@ -27,13 +27,13 @@ public class Main {
                 String[] sentences = inputMessage();
 
                 // Begin process
-                long startTime = System.currentTimeMillis();
+                long startTime = System.nanoTime();
                 transportMessage(sentences, queue, historyDisplay, historyStorage, spam);
 
                 // Store and print
                 processMessage(sentences, stack, queue);
-                long stopTime = System.currentTimeMillis();
-                System.out.println("Your process takes " + (stopTime - startTime) + "ms\n");
+                long stopTime = System.nanoTime();
+                System.out.println("Your process takes " + (stopTime - startTime) + "ns\n");
                 showMessage(stack, tempSpam);
 
                 // handle
@@ -46,8 +46,8 @@ public class Main {
         }
     }
 
-    private static boolean handle(Queue<String> historyDisplay, Queue<String> historyStorage,
-                                  Queue<String> tempSpam, Stack<String> spam) {
+    private static boolean handle(ArrayList<String> historyDisplay, ArrayList<String> historyStorage,
+                                  ArrayList<String> tempSpam, ArrayList<String> spam) {
         System.out.println("""
                 0. Handle with spam
                 1. History
@@ -78,7 +78,7 @@ public class Main {
         }
     }
 
-    private static void handleSpam(Queue<String> tempSpam, Stack<String> spam) {
+    private static void handleSpam(ArrayList<String> tempSpam, ArrayList<String> spam) {
         while (true) {
             System.out.println("""
                 0. Mark previously message as spam
@@ -106,7 +106,9 @@ public class Main {
                 } else {
                     while (!tempSpam.isEmpty()) {
                         // Poll all item in temSpam to add to spam
-                        spam.push(tempSpam.poll());
+                        while (!tempSpam.isEmpty()) {
+                            spam.add(tempSpam.remove(0));
+                        }
                         System.out.println("Add message to spam list successfully");
                     }
                 }
@@ -118,7 +120,7 @@ public class Main {
                 // check contains
                 if (spam.contains(sentence)) {
                     // remove the sentence from spam
-                    spam.remove(sentence);
+                    spam.remove(spam.getIndex(sentence));
                     System.out.println("That sentence has been delete in spam list");
                 } else {
                     System.out.println("That sentence is not on the spam list");
@@ -129,7 +131,9 @@ public class Main {
                 if (spam.isEmpty()) {
                     System.out.println("Nothing to delete");
                 } else {
-                    spam.popAll();
+                    while (!spam.isEmpty()) {
+                        spam.remove(0);
+                    }
                     System.out.println("Delete all spam list successfully");
                     System.out.println();
                 }
@@ -148,7 +152,7 @@ public class Main {
         }
     }
 
-    private static void handleHistory(Queue<String> historyDisplay, Queue<String> historyStorage) {
+    private static void handleHistory(ArrayList<String> historyDisplay, ArrayList<String> historyStorage) {
         while (true) {
             // check the history is empty
             if (historyDisplay.isEmpty()) {
@@ -185,7 +189,7 @@ public class Main {
                         // Get the index of the item the client want to delete
                         int indexRemove = historyStorage.getIndex(sentence);
                         // delete in two history
-                        historyStorage.remove(sentence);
+                        historyStorage.remove(indexRemove);
                         historyDisplay.remove(indexRemove);
                         System.out.println("That sentence has been delete in history");
                     } else {
@@ -194,8 +198,12 @@ public class Main {
                     System.out.println();
                 } else if (choiceHistory.equals("1")) {
                     // Delete two list history
-                    historyDisplay.pollAll();
-                    historyStorage.pollAll();
+                    while (!historyDisplay.isEmpty()) {
+                        historyDisplay.remove(0);
+                    }
+                    while (!historyStorage.isEmpty()) {
+                        historyStorage.remove(0);
+                    }
                     System.out.println("Delete all history successfully");
                     System.out.println();
                 } else if (choiceHistory.equals("2")) {
@@ -211,7 +219,7 @@ public class Main {
                         System.out.println("All records match: ");
                         // Loop for all list and display all result
                         for (int i =0; i< indexesFind.size(); i++) {
-                            String result = historyDisplay.getItemByIndex(indexesFind.get(i));
+                            String result = historyDisplay.get(indexesFind.get(i));
                             System.out.println(result);
                         }
                     }
@@ -225,11 +233,15 @@ public class Main {
 
 
 
-    private static void showMessage(Stack<String> stack, Queue<String> tempSpam) {
+    private static void showMessage(Stack<String> stack, ArrayList<String> tempSpam) {
+        while (!tempSpam.isEmpty()) {
+            // Poll all item in temSpam after begin new process
+            tempSpam.remove(0);
+        }
         // Loop for all item in stack
         while (!stack.isEmpty()) {
             // Add to temp spam
-            tempSpam.offer(stack.peek());
+            tempSpam.add(stack.peek());
             // Print message by pop all item in stack
             System.out.println("You received a new message: " + stack.pop());
         }
@@ -243,8 +255,8 @@ public class Main {
         }
     }
 
-    private static void transportMessage(String[] sentences, Queue<String> queue, Queue<String> historyDisplay,
-                                         Queue<String> historyStorage, Stack<String> spam) throws Exception {
+    private static void transportMessage(String[] sentences, Queue<String> queue, ArrayList<String> historyDisplay,
+                                         ArrayList<String> historyStorage, ArrayList<String> spam) throws Exception {
         // Format time to add story
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         for (int i =0; i< sentences.length; i++) {
@@ -262,8 +274,8 @@ public class Main {
                     System.out.println("Your message has been sent successfully");
                     // Add to history
                     Date date = new Date();
-                    historyDisplay.offer(dateFormat.format(date) + ": " + sentences[i]);
-                    historyStorage.offer(sentences[i]);
+                    historyDisplay.add(dateFormat.format(date) + ": " + sentences[i]);
+                    historyStorage.add(sentences[i]);
                 }
             }  catch (IndexOutOfBoundsException ie) {
                 System.out.println("Error: The message has exceeded 250 characters");

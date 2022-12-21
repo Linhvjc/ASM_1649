@@ -55,35 +55,35 @@ public class Stack<E> implements AbstractStack<E> {
         return false;
     }
 
-    @Override
-    public boolean remove(E element) {
-        ensureNonEmpty();
-        Node<E> current = top;
-        Node<E> currentPassed;
-        // check top
-        if (element.equals(current.element)) {
-            top = current.previous;
-            current.previous = null;
-            this.size--;
-            return true;
-        } else {
-            currentPassed = current;
-            current = current.previous;
-        }
-        // check other
-        while (current != null) {
-            if (element.equals(current.element)) {
-                currentPassed.previous = current.previous;
-                current.previous = null;
-                this.size--;
-                return true;
-            }
-            currentPassed = current;
-            current = current.previous;
-        }
-        return false;
-        // from a -> b -> c. we remove a -> b and b -> c. Instead, a -> c
-    }
+//    @Override
+//    public boolean remove(E element) {
+//        ensureNonEmpty();
+//        Node<E> current = top;
+//        Node<E> currentPassed;
+//        // check top
+//        if (element.equals(current.element)) {
+//            top = current.previous;
+//            current.previous = null;
+//            this.size--;
+//            return true;
+//        } else {
+//            currentPassed = current;
+//            current = current.previous;
+//        }
+//        // check other
+//        while (current != null) {
+//            if (element.equals(current.element)) {
+//                currentPassed.previous = current.previous;
+//                current.previous = null;
+//                this.size--;
+//                return true;
+//            }
+//            currentPassed = current;
+//            current = current.previous;
+//        }
+//        return false;
+//        // from a -> b -> c. we remove a -> b and b -> c. Instead, a -> c
+//    }
 
     private void ensureNonEmpty() {
         if (size == 0) throw new IllegalStateException("Stack is Empty!!! Can not pop!");
