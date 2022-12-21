@@ -45,14 +45,14 @@ public class Queue<E> implements AbstractQueue<E> {
         return element;
     }
 
-    @Override
+
     public void pollAll() {
         while (!isEmpty()) {
             poll();
         }
     }
 
-    @Override
+
     public boolean contains(E element) {
         Node<E> current = head;
         while (current != null) {
@@ -124,7 +124,7 @@ public class Queue<E> implements AbstractQueue<E> {
 //        return false;
 //        // from a -> b -> c. we remove a -> b and b -> c. Instead, a -> c
 //    }
-    @Override
+
     public int getIndex(E element) {
         ensureNonEmpty();
         Node<E> current = head;
@@ -138,7 +138,7 @@ public class Queue<E> implements AbstractQueue<E> {
         }
         return -1;
     }
-    @Override
+
     public E getItemByIndex(int index) {
         ensureNonEmpty();
         Node<E> current = head;
@@ -152,7 +152,7 @@ public class Queue<E> implements AbstractQueue<E> {
         }
         return null;
     }
-    @Override
+
     // Just for String
     public ArrayList<Integer> getMultipleIndex(E element) {
         ensureNonEmpty();
